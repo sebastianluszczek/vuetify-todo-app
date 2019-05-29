@@ -17,9 +17,9 @@
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
-            <img src="/avatar-1.png" alt>
+            <img :src="currentUser.photoURL" alt>
           </v-avatar>
-          <p class="white--text subheading mt-1">{{ currentUser.displayName }}</p>
+          <p class="white--text subheading mt-1 text-xs-center">{{ currentUser.displayName }}</p>
         </v-flex>
         <v-flex class="my-3">
           <Popup/>
@@ -51,7 +51,8 @@ export default {
       links: [
         { icon: "dashboard", text: "Dashboard", route: "/" },
         { icon: "folder", text: "My Projects", route: "/projects" },
-        { icon: "person", text: "Team", route: "/team" }
+        { icon: "group", text: "Team", route: "/team" },
+        { icon: "person", text: "Profile", route: "/profile" }
       ],
       isLoggedIn: false,
       currentUser: ""

@@ -1,9 +1,16 @@
 <template>
-  <v-layout>
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card class="pa-5">
+  <v-layout align-center justify-center>
+    <v-flex xs12 sm8 md6>
+      <v-card class="pa-5"  color="secondary">
         <v-card-title primary-title>
-          <h3 class="headline mb-0 text-xs-center">Login</h3>
+          <v-layout row wrap>
+            <v-flex xs8>
+              <h3 class="mb-0 display-2 white--text" >Login</h3>
+            </v-flex>
+            <v-flex xs4>
+                <v-btn flat color="primary" left to="/register">Register</v-btn>
+            </v-flex>
+          </v-layout>
         </v-card-title>
         <v-card-text>
           <v-text-field

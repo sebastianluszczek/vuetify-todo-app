@@ -1,9 +1,16 @@
 <template>
-  <v-layout>
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card class="pa-5">
+  <v-layout align-center justify-center>
+    <v-flex xs12 sm8 md6>
+      <v-card class="pa-5 white--text" color="secondary">
         <v-card-title primary-title>
-          <h3 class="headline mb-0 text-xs-center">Register</h3>
+          <v-layout row wrap>
+            <v-flex xs8>
+              <h3 class="mb-0 display-2">Register</h3>
+            </v-flex>
+            <v-flex xs4>
+                <v-btn flat color="primary" left to="/login">Sign In</v-btn>
+            </v-flex>
+          </v-layout>
         </v-card-title>
         <v-card-text>
           <v-text-field
@@ -11,6 +18,7 @@
             prepend-icon="person"
             v-model="name"
             :rules="[rules.required, rules.min]"
+            class="white--text"
           ></v-text-field>
           <v-text-field
             label="Email"
@@ -32,7 +40,7 @@
         </v-card-text>
 
         <v-card-actions>
-          <v-btn color="primary" @click.prevent="register">Register</v-btn>
+          <v-btn color="primary" @click.prevent="register" large>Register</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -69,7 +77,8 @@ export default {
               console.log(user);
               const newUser = {
                 name: this.name,
-                mail: this.email
+                mail: this.email,
+                avatarURL: null
               };
               firebase.auth().currentUser.updateProfile({
                 displayName: this.name
@@ -77,7 +86,8 @@ export default {
               firebase
                 .firestore()
                 .collection("users")
-                .add(newUser)
+                .doc(firebase.auth().currentUser.uid)
+                .set(newUser)
                 .then(() => {
                   console.log("user added!");
                   this.$router.go({ name: "dashboard" });
