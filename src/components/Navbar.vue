@@ -1,25 +1,28 @@
 <template>
   <nav>
     <v-toolbar flat app>
-      <v-toolbar-side-icon class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon class="grey--text" @click="drawer = !drawer" v-if="isLoggedIn"></v-toolbar-side-icon>
       <v-toolbar-title class="grey--text">
         <span class="font-weight-light">Todo</span>
         <span>App</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn flat color="grey">
+      <v-btn flat color="grey" @click="logOut" v-if="isLoggedIn">
         <span>Sign Out</span>
         <v-icon right>exit_to_app</v-icon>
       </v-btn>
     </v-toolbar>
 
-    <v-navigation-drawer v-model="drawer" app class="primary">
+    <v-navigation-drawer v-model="drawer" app class="secondary">
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
             <img src="/avatar-1.png" alt>
           </v-avatar>
-          <p class="white--text subheading mt-1">The Net Ninja</p>
+          <p class="white--text subheading mt-1">{{ currentUser.displayName }}</p>
+        </v-flex>
+        <v-flex class="my-3">
+          <Popup/>
         </v-flex>
       </v-layout>
       <v-list>
@@ -37,6 +40,10 @@
 </template>
 
 <script>
+import Popup from "@/components/Popup";
+
+import firebase from "@/firebase";
+
 export default {
   data() {
     return {
@@ -45,8 +52,29 @@ export default {
         { icon: "dashboard", text: "Dashboard", route: "/" },
         { icon: "folder", text: "My Projects", route: "/projects" },
         { icon: "person", text: "Team", route: "/team" }
-      ]
+      ],
+      isLoggedIn: false,
+      currentUser: ""
     };
+  },
+  components: {
+    Popup
+  },
+  methods: {
+    logOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.go({ name: "dashboard" });
+        });
+    }
+  },
+  mounted() {
+    if (firebase.auth().currentUser) {
+      this.isLoggedIn = true;
+      this.currentUser = firebase.auth().currentUser;
+    }
   }
 };
 </script>
